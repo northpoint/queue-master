@@ -31,7 +31,6 @@ stages:
 - stage: MavenBuild
   displayName: Maven Scan & Build
   jobs:
-  - job: JavaBuild 
   - template: /pipeline-templates/java-build.yaml@microservicesdemo
     parameters:
       mavenPomFile: 'pom.xml'
