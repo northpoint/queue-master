@@ -3,6 +3,10 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+name: $(Date:yyyyMMdd)-$(Rev:r)
+# name modifies the Build.BuildNumber format used in tag
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/process/run-number?view=azure-devops&tabs=yaml
+
 trigger:
 - master
 
@@ -10,7 +14,7 @@ variables:
 
  # Container registry service connection established during pipeline creation
   dockerfilePath: '**/docker/queue-master/Dockerfile'
-  tag: '$(Build.BuildId)'
+  tag: '$(Build.BuildNumber)'
   serviceName: queuemaster
 
 pool:
@@ -24,6 +28,17 @@ resources:
       endpoint: github-svcconn
 
 stages:
+- stage: SecurityScan
+  displayName: Security Scan
+  jobs:
+  - job: SecurityScan
+    steps:
+    - template: /pipeline-templates/security-scan-pipeline.yaml@microservicesdemo
+      parameters:
+        projectKey: $(serviceName)
+        projectVersion: $(tag)
+        cliSources: $(Build.Repository.LocalPath)
+
 - stage: MavenBuild
   displayName: Maven Build Stage
   jobs:
