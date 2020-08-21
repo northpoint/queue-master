@@ -41,7 +41,6 @@ stages:
 - stage: DockerBuildPush 
   displayName: Docker Build & Push Stage
   jobs:
-  - job: DockerBuildPush 
   - template: /pipeline-templates/docker-builddeploy-pipeline.yaml@microservicesdemo  # Template reference
     parameters:
       tag: $(tag)
