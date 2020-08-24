@@ -26,6 +26,7 @@ resources:
       type: github
       name: northpoint/microservices-demo
       endpoint: github-svcconn
+      ref: kevin-cachedb
 
 stages:
 - stage: MavenBuild
